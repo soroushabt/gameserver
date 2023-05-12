@@ -3,16 +3,55 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtCharts 2.3
+import Viewmodels 1.0
+
 
 
 Window {
+    property Viewmodel mymodel: mainviewmodel
+    property var newpoints: mymodel.mypoint
+    property int c: 0
+    property real lastmax: 0
+
+    onNewpointsChanged:
+    {
+        if(mymodel.currentstauts==="green")
+        {
+//            console.log("c_before",c)
+//            console.log("length",newpoints.length)
+            for( c ; c<newpoints.length ; c++)
+            {
+//                lastmax = newpoints[c];
+                series1.append(newpoints[c+1], newpoints[c]);
+//                console.log("newpoints[c]",newpoints[c]);
+            }
+//            console.log("lastmax",lastmax)
+//            console.log("newpoint" , newpoints[dist])
+//            console.log("c_after",c)
+//            console.log("time",time)
+//            console.log("dist",dist)
+        }
+    }
+
+//    Button
+//    {
+//        anchors.centerIn: parent
+//        text: "click"
+//        onClicked:
+//        {
+//            //            console.log("finalpoint" , times)
+//            //            test();
+//        }
+//        z:10
+//    }
+
     id:root
     minimumWidth: 1150
     minimumHeight: 500
     maximumWidth: 1150
     maximumHeight: 500
     visible: true
-    title: qsTr("Soroush Game")
+    title: qsTr("Soroush server Game")
     color: "#CACACA"
 
     ColumnLayout
@@ -29,7 +68,7 @@ Window {
             width:  2
             radius: 50
             background: Rectangle{
-                color: "yellow"
+                color: mymodel.currentstauts
                 radius: 50
             }
         }
@@ -90,8 +129,10 @@ Window {
             width: maincontainer.width
 
             ChartView {
+                id:charts
+                enabled: false
                 title: "Two Series, Common Axes"
-//                anchors.fill: parent
+                //                anchors.fill: parent
                 width: maincontainer.width
                 height: maincontainer.height -200
                 legend.visible: false
@@ -100,14 +141,15 @@ Window {
                 ValuesAxis {
                     id: axisX
                     min: 0
-                    max: 10
-                    tickCount: 5
+                    max: newpoints.length > 0 ? newpoints[newpoints.length-1] : 0
+                    tickCount: 10
                 }
 
                 ValuesAxis {
                     id: axisY
-                    min: -0.5
-                    max: 1.5
+                    min: 0
+//                    max: newpoints[c+1] > lastmax ? newpoints[c+1] : lastmax
+                    max:50
                 }
 
                 LineSeries {
@@ -117,13 +159,7 @@ Window {
                 }
             }
 
-            // Add data dynamically to the series
-            Component.onCompleted: {
-                for (var i = 0; i <= 20; i++) {
-                    series1.append(i, Math.random());
-                    //            series2.append(i, 5);
-                }
-            }
         }
     }
 }
+

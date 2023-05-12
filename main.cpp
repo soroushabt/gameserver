@@ -26,8 +26,13 @@ int main(int argc, char *argv[])
     thread.start();
 
     QMetaObject::invokeMethod(recieved, "listen");
-    ViewModel viewModel(recieved);
-    engine.rootContext()->setContextObject(&viewModel);
+    ViewModel *v = new ViewModel(recieved);
+
+    v->mypoint();
+//    qDebug() << v->currentStatus();
+
+    engine.rootContext()->setContextProperty("mainviewmodel", v);
+    qmlRegisterUncreatableType<ViewModel>("Viewmodels", 1 , 0 , "Viewmodel" , "error .... form qml register of viewmodels");
 
 
 

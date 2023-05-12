@@ -5,6 +5,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include<QObject>
+#include<QChar>
 
 
 class DataReceiver : public QObject
@@ -13,10 +14,15 @@ class DataReceiver : public QObject
     QTcpServer *m_server;
     QTcpSocket *m_socket;
     Q_PROPERTY(QString currentStatus READ currentStatus WRITE setCurrentStatus NOTIFY currentStatusChanged)
+    Q_PROPERTY(QString dataReceived READ dataReceived WRITE setDataReceived NOTIFY dataReceivedChanged)
 public:
     DataReceiver(QTcpServer *server);
     QString currentStatus() const;
     void setCurrentStatus(const QString &newCurrentStatus);
+
+
+    QString dataReceived() const;
+    void setDataReceived(const QString &newDataReceived);
 
 public slots:
     void DataReceivedHandler();
@@ -25,9 +31,15 @@ public slots:
 
 signals:
     void currentStatusChanged();
+    void dataReceivedChanged();
 
 private:
     QString m_currentStatus;
+    QByteArray m_buffer;
+
+    QString m_dataReceived;
 };
 
 #endif // DATARECEIVER_H
+
+
