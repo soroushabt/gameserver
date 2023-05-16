@@ -12,6 +12,8 @@ qt_add_executable(appGameserver
     main.cpp
     DataReceiver.h DataReceiver.cpp
     ViewModel.h ViewModel.cpp
+    datahandeler.h datahandeler.cpp
+    file.h file.cpp
 )
 
 qt_add_qml_module(appGameserver

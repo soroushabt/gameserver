@@ -11,8 +11,6 @@
 class DataReceiver : public QObject
 {
     Q_OBJECT
-    QTcpServer *m_server;
-    QTcpSocket *m_socket;
     Q_PROPERTY(QString currentStatus READ currentStatus WRITE setCurrentStatus NOTIFY currentStatusChanged)
     Q_PROPERTY(QString dataReceived READ dataReceived WRITE setDataReceived NOTIFY dataReceivedChanged)
 public:
@@ -23,6 +21,8 @@ public:
 
     QString dataReceived() const;
     void setDataReceived(const QString &newDataReceived);
+
+    QByteArray buffer() const;
 
 public slots:
     void DataReceivedHandler();
@@ -36,7 +36,8 @@ signals:
 private:
     QString m_currentStatus;
     QByteArray m_buffer;
-
+    QTcpServer *m_server;
+    QTcpSocket *m_socket;
     QString m_dataReceived;
 };
 

@@ -15,35 +15,27 @@ Window {
 
     onNewpointsChanged:
     {
+//        console.log("newpoints[c]",newpoints[c])
+
         if(mymodel.currentstauts==="green")
         {
-//            console.log("c_before",c)
-//            console.log("length",newpoints.length)
-            for( c ; c<newpoints.length ; c++)
-            {
-//                lastmax = newpoints[c];
-                series1.append(newpoints[c+1], newpoints[c]);
-//                console.log("newpoints[c]",newpoints[c]);
-            }
-//            console.log("lastmax",lastmax)
-//            console.log("newpoint" , newpoints[dist])
-//            console.log("c_after",c)
-//            console.log("time",time)
-//            console.log("dist",dist)
+//            for( c ; c<newpoints.length ; ++c)
+//            {
+                if(!isNaN(newpoints[c]) && !isNaN(newpoints[c+1]))
+                {
+                    console.log("newpoints[c]" , newpoints[c])
+                    console.log("newpoints[c+1]" , newpoints[c+1])
+                    series1.append(newpoints[c+1], newpoints[c]);
+                    if(axisY.max<newpoints[c])
+                    {
+                        axisY.max=newpoints[c]
+                    }
+                    c+=2;
+                }
+//            }
         }
     }
 
-//    Button
-//    {
-//        anchors.centerIn: parent
-//        text: "click"
-//        onClicked:
-//        {
-//            //            console.log("finalpoint" , times)
-//            //            test();
-//        }
-//        z:10
-//    }
 
     id:root
     minimumWidth: 1150
@@ -94,26 +86,18 @@ Window {
 
             RowLayout{
                 anchors.centerIn: parent
-                TextField{
-                    placeholderText: "name"
-                    onTextChanged:
-                    {
-
-                    }
+                spacing: 10
+                Text {
+                    id: name
+                    text: mymodel.namefamliy[0]
+                    font.pixelSize: 20
+                    color: "white"
                 }
-                TextField{
-                    placeholderText: "family"
-                }
-
-                ComboBox
-                {
-                    id: combo
-                    model: ["easy","hard"]
-                    onCurrentIndexChanged:
-                    {
-
-
-                    }
+                Text {
+                    id: family
+                    text: mymodel.namefamliy[1]
+                    font.pixelSize: 20
+                    color: "white"
                 }
             }
         }
@@ -148,8 +132,7 @@ Window {
                 ValuesAxis {
                     id: axisY
                     min: 0
-//                    max: newpoints[c+1] > lastmax ? newpoints[c+1] : lastmax
-                    max:50
+                    max:15
                 }
 
                 LineSeries {
@@ -157,8 +140,29 @@ Window {
                     axisX: axisX
                     axisY: axisY
                 }
-            }
 
+            }
+            Rectangle {
+                id:footer
+                width: parent.width
+                anchors.bottom:parent.bottom
+                height: 100
+                color: "#136597"
+                RowLayout{
+                    spacing: 100
+                    anchors.centerIn: parent
+                    Button
+                    {
+                        text: "Import File"
+                        Layout.minimumWidth: 120
+                        Layout.minimumHeight: 40
+                        onClicked:
+                        {
+
+                        }
+                    }
+                }
+            }
         }
     }
 }

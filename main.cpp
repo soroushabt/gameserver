@@ -6,6 +6,7 @@
 #include <QtQuick/QQuickView>
 #include "DataReceiver.h"
 #include "ViewModel.h"
+#include "file.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,7 +27,9 @@ int main(int argc, char *argv[])
     thread.start();
 
     QMetaObject::invokeMethod(recieved, "listen");
-    ViewModel *v = new ViewModel(recieved);
+    DataHandeler* data = new DataHandeler(recieved);
+    File* file = new File(recieved);
+    ViewModel *v = new ViewModel(recieved,data);
 
     v->mypoint();
 //    qDebug() << v->currentStatus();

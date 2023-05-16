@@ -54,6 +54,11 @@ void DataReceiver::listen()
     }
 }
 
+QByteArray DataReceiver::buffer() const
+{
+    return m_buffer;
+}
+
 
 QString DataReceiver::currentStatus() const
 {
