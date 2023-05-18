@@ -8,6 +8,7 @@
 #include<QChar>
 
 
+
 class DataReceiver : public QObject
 {
     Q_OBJECT
@@ -17,12 +18,12 @@ public:
     DataReceiver(QTcpServer *server);
     QString currentStatus() const;
     void setCurrentStatus(const QString &newCurrentStatus);
-
-
     QString dataReceived() const;
     void setDataReceived(const QString &newDataReceived);
-
     QByteArray buffer() const;
+    void cleardata();
+
+    void setBuffer(const QByteArray &newBuffer);
 
 public slots:
     void DataReceivedHandler();
@@ -39,6 +40,7 @@ private:
     QTcpServer *m_server;
     QTcpSocket *m_socket;
     QString m_dataReceived;
+
 };
 
 #endif // DATARECEIVER_H

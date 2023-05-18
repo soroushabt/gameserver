@@ -1,8 +1,12 @@
 
 #include "datahandeler.h"
+#include "file.h"
 
-DataHandeler::DataHandeler(DataReceiver *data)
+DataHandeler::DataHandeler(DataReceiver *data , File* file)
     :m_dataReciever(data)
+    ,m_file(file)
+    ,m_cleardata(false)
+    ,m_namfam({"",""})
 {
     connect(m_dataReciever,&DataReceiver::dataReceivedChanged,this,&DataHandeler::parsing);
 }
@@ -26,6 +30,10 @@ void DataHandeler::parsing()
             QString namefamily = data.mid(startnameindex, endnameIndex - startnameindex);
             setNamfam(namefamily.split(','));
             data.remove(0,namefamily.size());
+        }
+        if(m_dataReciever->dataReceived().back()=='*')
+        {
+            setCleardata(true);
         }
 
 
@@ -52,6 +60,7 @@ void DataHandeler::parsing()
             m_mypoint.append(x);
             m_mypoint.append(sumy);
         }
+
         // Move the start index to the next data point
         m_startindex = endIndex + 1;
     }
@@ -70,4 +79,28 @@ void DataHandeler::setNamfam(const QStringList &newNamfam)
         return;
     m_namfam = newNamfam;
     emit namfamChanged();
+}
+
+void DataHandeler::clearing()
+{
+    if(m_cleardata==true && m_file->clearfil()==true)
+    {
+        m_dataReciever->cleardata();
+        m_dataReciever->setBuffer({});
+    }
+}
+
+
+
+bool DataHandeler::cleardata() const
+{
+    return m_cleardata;
+}
+
+void DataHandeler::setCleardata(bool newCleardata)
+{
+    if (m_cleardata == newCleardata)
+        return;
+    m_cleardata = newCleardata;
+    emit cleardataChanged();
 }

@@ -5,15 +5,15 @@
 #include "DataReceiver.h"
 #include "datahandeler.h"
 #include <QObject>
-#include <thread>
 #include <fstream>
 #include <functional>
+
 
 class File : public QObject
 {
     Q_OBJECT
-    QString m_namefile;
-    std::thread m_thread;
+    Q_PROPERTY(bool clearfil READ clearfil WRITE setClearfil NOTIFY clearfilChanged)
+    int m_userid;
     DataReceiver* m_data;
     DataHandeler* m_datapars;
     int m_counter;
@@ -23,6 +23,14 @@ public:
     File(DataReceiver *data);
     ~File();
     void writeonfile();
+    bool clearfil() const;
+    void setClearfil(bool newClearfil);
+
+signals:
+    void clearfilChanged();
+
+private:
+    bool m_clearfil;
 };
 
 #endif // FILE_H

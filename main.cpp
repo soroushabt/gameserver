@@ -21,18 +21,24 @@ int main(int argc, char *argv[])
     QTcpServer *server = new QTcpServer();
     DataReceiver *recieved = new DataReceiver(server);
 
-    QThread thread;
-    recieved->moveToThread(&thread);
-    server->moveToThread(&thread);
-    thread.start();
+    QThread threadsocket;
+    recieved->moveToThread(&threadsocket);
+    server->moveToThread(&threadsocket);
+    threadsocket.start();
 
     QMetaObject::invokeMethod(recieved, "listen");
-    DataHandeler* data = new DataHandeler(recieved);
-    File* file = new File(recieved);
-    ViewModel *v = new ViewModel(recieved,data);
 
-    v->mypoint();
-//    qDebug() << v->currentStatus();
+    QThread threadfile;
+    File* file = new File(recieved);
+    file->moveToThread(&threadfile);
+    threadfile.start();
+
+    DataHandeler* data = new DataHandeler(recieved,file);
+
+
+
+    ViewModel *v = new ViewModel(recieved,data,file);
+
 
     engine.rootContext()->setContextProperty("mainviewmodel", v);
     qmlRegisterUncreatableType<ViewModel>("Viewmodels", 1 , 0 , "Viewmodel" , "error .... form qml register of viewmodels");

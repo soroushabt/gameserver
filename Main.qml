@@ -13,26 +13,49 @@ Window {
     property int c: 0
     property real lastmax: 0
 
+    Button
+    {
+        anchors.top: parent.top
+        //        color:"red"
+        height: 10
+        width: 20
+        onClicked:
+        {
+            //            console.log("done")
+            series1.clear()
+        }
+        z:10
+    }
+
+
     onNewpointsChanged:
     {
-//        console.log("newpoints[c]",newpoints[c])
 
         if(mymodel.currentstauts==="green")
         {
-//            for( c ; c<newpoints.length ; ++c)
-//            {
-                if(!isNaN(newpoints[c]) && !isNaN(newpoints[c+1]))
+            //            for( c ; c<newpoints.length ; ++c)
+            if(!isNaN(newpoints[c]) && !isNaN(newpoints[c+1]))
+            {
+                series1.append(newpoints[c+1], newpoints[c]);
+                if(axisY.max<newpoints[c])
                 {
-                    console.log("newpoints[c]" , newpoints[c])
-                    console.log("newpoints[c+1]" , newpoints[c+1])
-                    series1.append(newpoints[c+1], newpoints[c]);
-                    if(axisY.max<newpoints[c])
-                    {
-                        axisY.max=newpoints[c]
-                    }
-                    c+=2;
+                    axisY.max=newpoints[c]
                 }
-//            }
+                if(axisX.max<newpoints[newpoints.length-1])
+                {
+                    axisX.max=newpoints[newpoints.length-1]
+                }
+                if(mymodel.clearing)
+                {
+                    console.log("done")
+                    series1.clear()
+                    axisY.max=15
+                    axisX.max=50
+                    c=0
+                }
+
+                c+=2;
+            }
         }
     }
 
@@ -115,8 +138,7 @@ Window {
             ChartView {
                 id:charts
                 enabled: false
-                title: "Two Series, Common Axes"
-                //                anchors.fill: parent
+                title: "Distance, Times"
                 width: maincontainer.width
                 height: maincontainer.height -200
                 legend.visible: false
@@ -125,7 +147,7 @@ Window {
                 ValuesAxis {
                     id: axisX
                     min: 0
-                    max: newpoints.length > 0 ? newpoints[newpoints.length-1] : 0
+                    max: 50
                     tickCount: 10
                 }
 
@@ -165,5 +187,6 @@ Window {
             }
         }
     }
+
 }
 

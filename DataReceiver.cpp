@@ -54,9 +54,19 @@ void DataReceiver::listen()
     }
 }
 
+void DataReceiver::setBuffer(const QByteArray &newBuffer)
+{
+    m_buffer = newBuffer;
+}
+
 QByteArray DataReceiver::buffer() const
 {
     return m_buffer;
+}
+
+void DataReceiver::cleardata()
+{
+    m_dataReceived.clear();
 }
 
 
