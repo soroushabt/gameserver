@@ -5,10 +5,13 @@
 DataHandeler::DataHandeler(DataReceiver *data , File* file)
     :m_dataReciever(data)
     ,m_file(file)
-    ,m_cleardata(false)
     ,m_namfam({"",""})
+    ,m_clearpars(false)
+//    ,m_mypoint({15,50})
 {
+    m_mypoint.fill(0);
     connect(m_dataReciever,&DataReceiver::dataReceivedChanged,this,&DataHandeler::parsing);
+    connect(m_file,&File::clearfilChanged,this,&DataHandeler::clearing);
 }
 
 
@@ -29,21 +32,12 @@ void DataHandeler::parsing()
             int endnameIndex = data.indexOf('@', startnameindex);
             QString namefamily = data.mid(startnameindex, endnameIndex - startnameindex);
             setNamfam(namefamily.split(','));
-            data.remove(0,namefamily.size());
-        }
-        if(m_dataReciever->dataReceived().back()=='*')
-        {
-            setCleardata(true);
+            data.remove(0,namefamily.size()+2);
         }
 
 
         // Find the index of the next '$' character
         int endIndex = data.indexOf('$', m_startindex);
-        if (endIndex == -1)
-        {
-            // No more data points, exit the loop
-            break;
-        }
         // Extract the substring containing the current data point
         QString pointData = data.mid(m_startindex, endIndex - m_startindex);
         // Split the substring into x and y values
@@ -61,6 +55,16 @@ void DataHandeler::parsing()
             m_mypoint.append(sumy);
         }
 
+        if(data.toStdString().back()=='*')
+        {
+            m_clearpars = true;
+            clearing();
+        }
+        if (endIndex == -1)
+        {
+            // No more data points, exit the loop
+            break;
+        }
         // Move the start index to the next data point
         m_startindex = endIndex + 1;
     }
@@ -83,24 +87,16 @@ void DataHandeler::setNamfam(const QStringList &newNamfam)
 
 void DataHandeler::clearing()
 {
-    if(m_cleardata==true && m_file->clearfil()==true)
+    if(m_clearpars==true && m_file->clearfil()==true)
     {
         m_dataReciever->cleardata();
+        m_startindex = 0;
+        setNamfam({"",""});
         m_dataReciever->setBuffer({});
+        m_mypoint.clear();
+        emit cleardataChanged();
     }
 }
 
 
 
-bool DataHandeler::cleardata() const
-{
-    return m_cleardata;
-}
-
-void DataHandeler::setCleardata(bool newCleardata)
-{
-    if (m_cleardata == newCleardata)
-        return;
-    m_cleardata = newCleardata;
-    emit cleardataChanged();
-}

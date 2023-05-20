@@ -6,10 +6,11 @@ ViewModel::ViewModel(DataReceiver* reciver , DataHandeler *data ,File* file)
     ,m_datahandler(data)
     ,m_file(file)
     ,m_namefamliy({""})
-    ,m_clearing(false)
+    ,m_clearing(-1)
+    ,m_numuser(0)
 {
     QObject::connect(m_dataReciever,&DataReceiver::currentStatusChanged , this ,&ViewModel::currentstautsChanged);
-    QObject::connect(m_datahandler,&DataHandeler::cleardataChanged,this,&ViewModel::clearingChanged);
+    QObject::connect(m_datahandler,&DataHandeler::cleardataChanged,this,&ViewModel::clear);
     QObject::connect(m_datahandler,&DataHandeler::isparsed , this ,&ViewModel::mypointChanged);
     QObject::connect(m_datahandler,&DataHandeler::namfamChanged,this,&ViewModel::namefamliyChanged);
 
@@ -18,6 +19,11 @@ ViewModel::ViewModel(DataReceiver* reciver , DataHandeler *data ,File* file)
 void ViewModel::listen()
 {
     QMetaObject::invokeMethod(m_dataReciever, "listen");
+}
+
+void ViewModel::readfile(QString url)
+{
+    QMetaObject::invokeMethod(m_file, "readonfile" , Q_ARG(QString, url));
 }
 
 QString ViewModel::currentstauts() const
@@ -47,15 +53,18 @@ QStringList ViewModel::namefamliy() const
     return m_datahandler->namfam();
 }
 
-
-
-
-bool ViewModel::clearing() const
+void ViewModel::clear()
 {
-    return m_datahandler->cleardata();
+    std::cerr << "tasdf" << std::endl;
+    setClearing(m_numuser++);
 }
 
-void ViewModel::setClearing(bool newClearing)
+int ViewModel::clearing() const
+{
+    return m_clearing;
+}
+
+void ViewModel::setClearing(int newClearing)
 {
     if (m_clearing == newClearing)
         return;

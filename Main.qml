@@ -1,17 +1,44 @@
 import QtQuick
 import QtQuick.Window
-import QtQuick.Controls
+import QtQuick.Controls 2.5
 import QtQuick.Layouts
 import QtCharts 2.3
 import Viewmodels 1.0
+import QtQuick.Dialogs
 
 
 
 Window {
     property Viewmodel mymodel: mainviewmodel
     property var newpoints: mymodel.mypoint
+    property int clearing: mymodel.clearing
     property int c: 0
     property real lastmax: 0
+
+    FileDialog
+    {
+        id: fileDialog
+        title: "Open File"
+        visible: false
+        nameFilters: [ "Text files (*.txt)", "All files (*)" ]
+        onAccepted: {
+            mymodel.readfile(selectedFile.toString())
+        }
+
+        // The onRejected signal is emitted when the user cancels the file dialog
+        onRejected: {
+            // Do something when the file dialog is cancelled
+        }
+    }
+
+    onClearingChanged:
+    {
+        series1.clear()
+//        console.log("done")
+        axisX.max=50
+        axisY.max=15
+        c=0
+    }
 
     Button
     {
@@ -21,7 +48,7 @@ Window {
         width: 20
         onClicked:
         {
-            //            console.log("done")
+            console.log(mymodel.clearing)
             series1.clear()
         }
         z:10
@@ -45,15 +72,6 @@ Window {
                 {
                     axisX.max=newpoints[newpoints.length-1]
                 }
-                if(mymodel.clearing)
-                {
-                    console.log("done")
-                    series1.clear()
-                    axisY.max=15
-                    axisX.max=50
-                    c=0
-                }
-
                 c+=2;
             }
         }
@@ -180,7 +198,7 @@ Window {
                         Layout.minimumHeight: 40
                         onClicked:
                         {
-
+                            fileDialog.open()
                         }
                     }
                 }
@@ -189,4 +207,7 @@ Window {
     }
 
 }
+
+
+
 

@@ -18,12 +18,14 @@ class File : public QObject
     DataHandeler* m_datapars;
     int m_counter;
     std::ofstream m_outputfile;
+    std::ifstream m_inputfile;
 
 public:
     File(DataReceiver *data);
     ~File();
     void writeonfile();
     bool clearfil() const;
+    Q_INVOKABLE void readonfile(QString url);
     void setClearfil(bool newClearfil);
 
 signals:
@@ -31,6 +33,7 @@ signals:
 
 private:
     bool m_clearfil;
+    int m_sizefile;
 };
 
 #endif // FILE_H
