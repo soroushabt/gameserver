@@ -37,7 +37,7 @@ private:
     QVector<double> m_mypoint;
     int m_startindex=0;
     int lasty=0;
-    int sumy=0;
+    long sumy=0;
     bool m_clearpars;
 };
 

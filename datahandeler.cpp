@@ -46,7 +46,7 @@ void DataHandeler::parsing()
         {
             // Convert the x and y values to doubles and add them to the QVector
             double x = values[0].toDouble();
-            double y = values[1].toDouble() - lasty;
+            double y = values[1].toLong() - lasty;
             sumy += y;
             lasty = values[1].toDouble();
             if(m_startindex==0)
