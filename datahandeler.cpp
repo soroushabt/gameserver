@@ -12,6 +12,7 @@ DataHandeler::DataHandeler(DataReceiver *data , File* file)
     m_mypoint.fill(0);
     connect(m_dataReciever,&DataReceiver::dataReceivedChanged,this,&DataHandeler::parsing);
     connect(m_file,&File::clearfilChanged,this,&DataHandeler::clearing);
+    connect(m_file,&File::datafileChanged,this,&DataHandeler::parsing);
 }
 
 
@@ -22,7 +23,7 @@ QVector<double> DataHandeler::mypoint() const
 
 void DataHandeler::parsing()
 {
-    QString data = m_dataReciever->dataReceived();
+    data = m_dataReciever->dataReceived();
     int counterdelimiter=0;
     while (m_startindex < data.size())
     {
@@ -66,6 +67,9 @@ void DataHandeler::parsing()
             break;
         }
         // Move the start index to the next data point
+        std::cerr <<lasty << std::endl;
+        std::cerr <<values[1].toLong() << std::endl;
+        std::cerr << sumy << std::endl;
         m_startindex = endIndex + 1;
     }
     emit isparsed();
@@ -85,6 +89,11 @@ void DataHandeler::setNamfam(const QStringList &newNamfam)
     emit namfamChanged();
 }
 
+void DataHandeler::setData(const QString &newData)
+{
+    data = newData;
+}
+
 void DataHandeler::clearing()
 {
     if(m_clearpars==true && m_file->clearfil()==true)
@@ -96,6 +105,12 @@ void DataHandeler::clearing()
         m_mypoint.clear();
         emit cleardataChanged();
     }
+}
+
+void DataHandeler::readfile()
+{
+    setData(m_file->datafile());
+    parsing();
 }
 
 

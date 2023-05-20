@@ -23,6 +23,7 @@ Window {
         nameFilters: [ "Text files (*.txt)", "All files (*)" ]
         onAccepted: {
             mymodel.readfile(selectedFile.toString())
+            console.log(selectedFile.toString())
         }
 
         // The onRejected signal is emitted when the user cancels the file dialog

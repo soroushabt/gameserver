@@ -1,6 +1,7 @@
 
 #include "file.h"
 #include <functional>
+#include <QString>
 
 File::File(DataReceiver* data)
     :m_data(data)
@@ -41,17 +42,21 @@ void File::writeonfile()
     }
     else
     {
-        m_outputfile.open("../GameServer/Users/user"+std::to_string(m_userid)+".txt");
+        m_outputfile.open("../gameserver/Users/user"+std::to_string(m_userid)+".txt");
     }
 
 }
 
 void File::readonfile(QString url)
 {
-    m_inputfile.open(url.toStdString());
-    std::string datafile;
-    m_inputfile >> datafile;
-    m_data->setDataReceived(QString::fromStdString(datafile));
+    std::cerr << "test";
+    m_inputfile.open(url.toStdString().substr(7));
+    if(m_inputfile.is_open())
+    {
+        std::string datafile;
+        m_inputfile >> datafile;
+        setDatafile(QString::fromStdString(datafile));
+    }
 }
 
 
@@ -67,4 +72,17 @@ void File::setClearfil(bool newClearfil)
         return;
     m_clearfil = newClearfil;
     emit clearfilChanged();
+}
+
+QString File::datafile() const
+{
+    return m_datafile;
+}
+
+void File::setDatafile(const QString &newDatafile)
+{
+    if (m_datafile == newDatafile)
+        return;
+    m_datafile = newDatafile;
+    emit datafileChanged();
 }
