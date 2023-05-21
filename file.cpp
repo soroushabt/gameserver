@@ -26,13 +26,14 @@ void File::writeonfile()
         //        qDebug() << "buffer" << m_data->buffer();
         if(!m_data->buffer().isEmpty())
         {
-            m_outputfile << m_data->dataReceived().toStdString().substr(m_sizefile);
+//            m_outputfile << m_data->dataReceived().toStdString().substr(m_sizefile);
+            m_outputfile << m_data->dataReceived().toStdString();
             m_outputfile.flush();
             m_sizefile = m_outputfile.tellp();
             if(m_data->dataReceived().toStdString().back()=='*')
             {
                 std::cerr << "test";
-                m_sizefile=0;
+//                m_sizefile=0;
                 m_outputfile.close();
                 m_userid++;
                 setClearfil(true);
@@ -42,7 +43,7 @@ void File::writeonfile()
     }
     else
     {
-        m_outputfile.open("../gameserver/Users/user"+std::to_string(m_userid)+".txt");
+        m_outputfile.open("../gameserver/Users/user"+std::to_string(m_userid)+".txt" , std::ostream::app | std::ostream::out);
     }
 
 }
