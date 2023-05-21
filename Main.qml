@@ -23,7 +23,7 @@ Window {
         nameFilters: [ "Text files (*.txt)", "All files (*)" ]
         onAccepted: {
             mymodel.readfile(selectedFile.toString())
-            console.log(selectedFile.toString())
+            //            console.log(selectedFile.toString())
         }
 
         // The onRejected signal is emitted when the user cancels the file dialog
@@ -35,7 +35,7 @@ Window {
     onClearingChanged:
     {
         series1.clear()
-//        console.log("done")
+        //        console.log("done")
         axisX.max=50
         axisY.max=15
         c=0
@@ -49,7 +49,7 @@ Window {
         width: 20
         onClicked:
         {
-            console.log(mymodel.clearing)
+            //            console.log(mymodel.clearing)
             series1.clear()
         }
         z:10
@@ -59,9 +59,31 @@ Window {
     onNewpointsChanged:
     {
 
-        if(mymodel.currentstauts==="green")
+//                if(mymodel.currentstauts==="green")
+//                {
+//                    if(!isNaN(newpoints[c]) && !isNaN(newpoints[c+1]))
+//                    {
+//                        console.log(newpoints)
+//                        console.log(newpoints[c])
+//                        console.log(newpoints[c+1])
+//                        series1.append(newpoints[c+1], newpoints[c]);
+//                        if(axisY.max<newpoints[c])
+//                        {
+//                            axisY.max=newpoints[c]
+//                        }
+//                        if(axisX.max<newpoints[newpoints.length-1])
+//                        {
+//                            axisX.max=newpoints[newpoints.length-1]
+//                        }
+//                                        c+=2;
+//                    }
+//                }
+
+
+        for( ; ; )
         {
-            //            for( c ; c<newpoints.length ; ++c)
+            if(newpoints.length===c)
+                break;
             if(!isNaN(newpoints[c]) && !isNaN(newpoints[c+1]))
             {
                 series1.append(newpoints[c+1], newpoints[c]);
@@ -73,8 +95,8 @@ Window {
                 {
                     axisX.max=newpoints[newpoints.length-1]
                 }
-                c+=2;
             }
+            c+=2;
         }
     }
 

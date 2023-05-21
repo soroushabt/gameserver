@@ -16,13 +16,11 @@ class DataHandeler : public QObject
 signals:
     void isparsed();
     void namfamChanged();
-
     void cleardataChanged();
 
 public slots:
-    void parsing();
+    void parsing(QString datarecieved);
     void clearing();
-    void readfile();
 public:
     DataHandeler(DataReceiver* data, File* file);
     QVector<double> mypoint() const;

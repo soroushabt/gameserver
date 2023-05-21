@@ -21,9 +21,12 @@ QVector<double> DataHandeler::mypoint() const
     return m_mypoint;
 }
 
-void DataHandeler::parsing()
+void DataHandeler::parsing(QString datarecieved)
 {
-    data = m_dataReciever->dataReceived();
+    std::cerr << "pars";
+//    data = m_dataReciever->dataReceived();
+    data = datarecieved;
+//    qDebug() << "datafile" <<  datarecieved ;
     int counterdelimiter=0;
     while (m_startindex < data.size())
     {
@@ -67,9 +70,6 @@ void DataHandeler::parsing()
             break;
         }
         // Move the start index to the next data point
-        std::cerr <<lasty << std::endl;
-        std::cerr <<values[1].toLong() << std::endl;
-        std::cerr << sumy << std::endl;
         m_startindex = endIndex + 1;
     }
     emit isparsed();
@@ -107,11 +107,7 @@ void DataHandeler::clearing()
     }
 }
 
-void DataHandeler::readfile()
-{
-    setData(m_file->datafile());
-    parsing();
-}
+
 
 
 

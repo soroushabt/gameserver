@@ -93,5 +93,5 @@ void DataReceiver::setDataReceived(const QString &newDataReceived)
     if (m_dataReceived == newDataReceived)
         return;
     m_dataReceived.append(newDataReceived);
-    emit dataReceivedChanged();
+    emit dataReceivedChanged(m_dataReceived);
 }

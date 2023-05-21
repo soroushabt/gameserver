@@ -32,7 +32,7 @@ public slots:
 
 signals:
     void currentStatusChanged();
-    void dataReceivedChanged();
+    void dataReceivedChanged(QString str);
 
 private:
     QString m_currentStatus;

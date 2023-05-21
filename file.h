@@ -34,8 +34,7 @@ public:
 
 signals:
     void clearfilChanged();
-
-    void datafileChanged();
+    void datafileChanged(QString str);
 
 private:
     bool m_clearfil;
