@@ -55,8 +55,9 @@ void File::readonfile(QString url)
     {
         std::string datafile;
         m_inputfile >> datafile;
-        std::cerr << "file main" << datafile<< std::endl << std::endl;
         setDatafile(QString::fromStdString(datafile));
+//        qDebug() << "file main" << m_datafile ;
+        m_inputfile.close();
     }
 }
 
@@ -82,8 +83,11 @@ QString File::datafile() const
 
 void File::setDatafile(const QString &newDatafile)
 {
-    if (m_datafile == newDatafile)
-        return;
+//    if (m_datafile == newDatafile)
+//    {
+//        std::cerr << "test"<< std::endl;
+//        return;
+//    }
     m_datafile = newDatafile;
     emit datafileChanged(m_datafile);
 }

@@ -27,6 +27,7 @@ public:
     QStringList names() const;
     QStringList namfam() const;
     void setNamfam(const QStringList &newNamfam);
+    void nonautoclear();
 
 
     void setData(const QString &newData);

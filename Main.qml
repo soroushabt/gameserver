@@ -63,7 +63,7 @@ Window {
         onClicked:
         {
             console.log(newpoints)
-            series1.clear()
+//            series1.clear()
         }
         z:10
     }
@@ -235,6 +235,16 @@ Window {
                         onClicked:
                         {
                             fileDialog.open()
+                        }
+                    }
+                    Button
+                    {
+                        text: "Clear"
+                        Layout.minimumWidth: 120
+                        Layout.minimumHeight: 40
+                        onClicked:
+                        {
+                            mymodel.clearingslot()
                         }
                     }
                 }

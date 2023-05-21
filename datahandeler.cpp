@@ -24,7 +24,7 @@ QVector<double> DataHandeler::mypoint() const
 void DataHandeler::parsing(QString datarecieved)
 {
     std::cerr << "pars";
-//    data = m_dataReciever->dataReceived();
+    //    data = m_dataReciever->dataReceived();
     data = datarecieved;
     qDebug() << "datafile" <<  datarecieved;
     int counterdelimiter=0;
@@ -87,6 +87,17 @@ void DataHandeler::setNamfam(const QStringList &newNamfam)
         return;
     m_namfam = newNamfam;
     emit namfamChanged();
+}
+
+void DataHandeler::nonautoclear()
+{
+    m_dataReciever->cleardata();
+    m_startindex = 0;
+    setNamfam({"",""});
+    m_dataReciever->setBuffer({});
+    m_mypoint.clear();
+    m_clearpars=false;
+    emit cleardataChanged();
 }
 
 void DataHandeler::setData(const QString &newData)

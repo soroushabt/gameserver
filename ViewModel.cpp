@@ -53,7 +53,8 @@ QStringList ViewModel::namefamliy() const
 
 void ViewModel::clearingslot()
 {
-    emit clearing();
+    std::cerr << "clearslot" << std::endl;
+    m_datahandler->nonautoclear();
 }
 
 
