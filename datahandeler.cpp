@@ -26,7 +26,7 @@ void DataHandeler::parsing(QString datarecieved)
     std::cerr << "pars";
 //    data = m_dataReciever->dataReceived();
     data = datarecieved;
-//    qDebug() << "datafile" <<  datarecieved ;
+    qDebug() << "datafile" <<  datarecieved;
     int counterdelimiter=0;
     while (m_startindex < data.size())
     {
@@ -103,6 +103,8 @@ void DataHandeler::clearing()
         setNamfam({"",""});
         m_dataReciever->setBuffer({});
         m_mypoint.clear();
+        m_file->setClearfil(false);
+        m_clearpars=false;
         emit cleardataChanged();
     }
 }

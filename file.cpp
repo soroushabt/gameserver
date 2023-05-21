@@ -55,7 +55,7 @@ void File::readonfile(QString url)
     {
         std::string datafile;
         m_inputfile >> datafile;
-//        std::cerr << "file main" << datafile<< std::endl << std::endl;
+        std::cerr << "file main" << datafile<< std::endl << std::endl;
         setDatafile(QString::fromStdString(datafile));
     }
 }

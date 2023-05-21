@@ -11,7 +11,7 @@ import QtQuick.Dialogs
 Window {
     property Viewmodel mymodel: mainviewmodel
     property var newpoints: mymodel.mypoint
-    property int clearing: mymodel.clearing
+//    property int clearing: mymodel.clearing
     property int c: 0
     property real lastmax: 0
 
@@ -32,14 +32,27 @@ Window {
         }
     }
 
-    onClearingChanged:
+    Connections
     {
-        series1.clear()
-        //        console.log("done")
-        axisX.max=50
-        axisY.max=15
-        c=0
+        target: mymodel
+        onClearing:
+        {
+            console.log("clearqml")
+            series1.clear()
+            axisX.max=50
+            axisY.max=15
+            c=0
+        }
     }
+
+//    onClearingChanged:
+//    {
+//        console.log("clearqml")
+//        series1.clear()
+//        axisX.max=50
+//        axisY.max=15
+//        c=0
+//    }
 
     Button
     {
@@ -49,7 +62,7 @@ Window {
         width: 20
         onClicked:
         {
-            //            console.log(mymodel.clearing)
+            console.log(newpoints)
             series1.clear()
         }
         z:10
@@ -59,25 +72,25 @@ Window {
     onNewpointsChanged:
     {
 
-//                if(mymodel.currentstauts==="green")
-//                {
-//                    if(!isNaN(newpoints[c]) && !isNaN(newpoints[c+1]))
-//                    {
-//                        console.log(newpoints)
-//                        console.log(newpoints[c])
-//                        console.log(newpoints[c+1])
-//                        series1.append(newpoints[c+1], newpoints[c]);
-//                        if(axisY.max<newpoints[c])
-//                        {
-//                            axisY.max=newpoints[c]
-//                        }
-//                        if(axisX.max<newpoints[newpoints.length-1])
-//                        {
-//                            axisX.max=newpoints[newpoints.length-1]
-//                        }
-//                                        c+=2;
-//                    }
-//                }
+        //                if(mymodel.currentstauts==="green")
+        //                {
+        //                    if(!isNaN(newpoints[c]) && !isNaN(newpoints[c+1]))
+        //                    {
+        //                        console.log(newpoints)
+        //                        console.log(newpoints[c])
+        //                        console.log(newpoints[c+1])
+        //                        series1.append(newpoints[c+1], newpoints[c]);
+        //                        if(axisY.max<newpoints[c])
+        //                        {
+        //                            axisY.max=newpoints[c]
+        //                        }
+        //                        if(axisX.max<newpoints[newpoints.length-1])
+        //                        {
+        //                            axisX.max=newpoints[newpoints.length-1]
+        //                        }
+        //                                        c+=2;
+        //                    }
+        //                }
 
 
         for( ; ; )

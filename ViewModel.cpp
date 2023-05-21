@@ -6,11 +6,9 @@ ViewModel::ViewModel(DataReceiver* reciver , DataHandeler *data ,File* file)
     ,m_datahandler(data)
     ,m_file(file)
     ,m_namefamliy({""})
-    ,m_clearing(-1)
-    ,m_numuser(0)
 {
     QObject::connect(m_dataReciever,&DataReceiver::currentStatusChanged , this ,&ViewModel::currentstautsChanged);
-    QObject::connect(m_datahandler,&DataHandeler::cleardataChanged,this,&ViewModel::clear);
+    QObject::connect(m_datahandler,&DataHandeler::cleardataChanged,this,&ViewModel::clearing);
     QObject::connect(m_datahandler,&DataHandeler::isparsed , this ,&ViewModel::mypointChanged);
     QObject::connect(m_datahandler,&DataHandeler::namfamChanged,this,&ViewModel::namefamliyChanged);
 
@@ -53,21 +51,9 @@ QStringList ViewModel::namefamliy() const
     return m_datahandler->namfam();
 }
 
-void ViewModel::clear()
+void ViewModel::clearingslot()
 {
-    std::cerr << "tasdf" << std::endl;
-    setClearing(m_numuser++);
+    emit clearing();
 }
 
-int ViewModel::clearing() const
-{
-    return m_clearing;
-}
 
-void ViewModel::setClearing(int newClearing)
-{
-    if (m_clearing == newClearing)
-        return;
-    m_clearing = newClearing;
-    emit clearingChanged();
-}
